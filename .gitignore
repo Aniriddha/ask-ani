@@ -1,0 +1,11 @@
+node_modules/
+.env
+.netlify/
+.DS_Store
+# your real profile and voice clips stay private
+knowledge/*
+!knowledge/profile.example.md
+voice/
+*.wav
+*.m4a
+*.mp3

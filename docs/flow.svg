@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" role="img" aria-labelledby="t d">
+      <title id="t">Ask Ani system flow</title>
+      <desc id="d">Lane one: a recruiter requests access, Ani gets an email and approves. Lane two: an approved recruiter asks a question, the function checks access, reads the info pool and asks Claude, then returns a signed answer. Lane three: the browser sends the signed answer to the voice function, which asks Gemini to speak it in the owner's voice and plays the audio.</desc>
+      <rect width="1000" height="560" rx="16" fill="#15301F"/>
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(244,236,227,.45)"/></marker>
+        <style>
+          .lane { font: 500 11px "JetBrains Mono", monospace; letter-spacing: 2px; fill: #C99B58; }
+          .box { fill: #10261C; stroke: rgba(244,236,227,.22); }
+          .fn { fill: #10261C; stroke: #C99B58; }
+          .ext { fill: rgba(201,155,88,.12); stroke: rgba(201,155,88,.5); }
+          .who { fill: #1B3A29; stroke: rgba(244,236,227,.3); }
+          .h { font: 400 16px "Newsreader", Georgia, serif; fill: #F4ECE3; }
+          .s { font: 400 11px "Work Sans", sans-serif; fill: rgba(244,236,227,.62); }
+          .m { font: 500 10px "JetBrains Mono", monospace; fill: #C99B58; }
+          .link { stroke: rgba(244,236,227,.35); stroke-width: 1.5; fill: none; }
+          .pkt { fill: #C99B58; }
+          .node { transform-box: fill-box; transform-origin: center; transition: transform .45s ease, filter .45s ease; }
+          .node rect { transition: fill .45s ease, stroke .45s ease, stroke-width .45s ease; }
+          .node.on { transform: scale(1.07); filter: drop-shadow(0 0 14px rgba(201,155,88,.45)); }
+          .node.on rect { fill: #24452F; stroke: #C99B58; stroke-width: 2; }
+          .node.done rect { stroke: rgba(201,155,88,.7); }
+          #pkt { transition: cx .7s ease-in-out, cy .5s ease-in-out; filter: drop-shadow(0 0 8px rgba(201,155,88,.8)); }
+
+        </style>
+      </defs>
+
+      <!-- Lane 1: access -->
+      <text class="lane" x="24" y="40">ONE · REQUEST AND APPROVAL</text>
+      <g transform="translate(24 56)"><g class="node" data-cx="94" data-cy="98">
+        <rect class="who" width="140" height="84" rx="10"/><text class="h" x="14" y="30">Recruiter</text><text class="s" x="14" y="50">enters name + email</text><text class="s" x="14" y="66">on the website</text></g>
+      </g>
+      <g transform="translate(188 56)"><g class="node" data-cx="258" data-cy="98">
+        <rect class="fn" width="140" height="84" rx="10"/><text class="m" x="14" y="22">ask-ani-access</text><text class="h" x="14" y="46">Log request</text><text class="s" x="14" y="66">status: pending</text></g>
+      </g>
+      <g transform="translate(352 56)"><g class="node" data-cx="422" data-cy="98">
+        <rect class="ext" width="140" height="84" rx="10"/><text class="m" x="14" y="22">NETLIFY FORMS</text><text class="h" x="14" y="46">Email to owner</text><text class="s" x="14" y="66">Approve / Deny links</text></g>
+      </g>
+      <g transform="translate(516 56)"><g class="node" data-cx="586" data-cy="98">
+        <rect class="who" width="140" height="84" rx="10"/><text class="h" x="14" y="30">Owner</text><text class="s" x="14" y="50">tap Approve, then</text><text class="s" x="14" y="66">confirm on the page</text></g>
+      </g>
+      <g transform="translate(680 56)"><g class="node" data-cx="750" data-cy="98">
+        <rect class="fn" width="140" height="84" rx="10"/><text class="m" x="14" y="22">ask-ani-approve</text><text class="h" x="14" y="46">Check signed link</text><text class="s" x="14" y="66">status: approved</text></g>
+      </g>
+      <g transform="translate(844 56)"><g class="node" data-cx="910" data-cy="98">
+        <rect class="who" width="132" height="84" rx="10"/><text class="h" x="14" y="30">Chat unlocks</text><text class="s" x="14" y="50">recruiter's page</text><text class="s" x="14" y="66">checks every 15s</text></g>
+      </g>
+      <path class="link" marker-end="url(#ar)" d="M164 98H186 M328 98H350 M492 98H514 M656 98H678 M820 98H842"/>
+
+      <!-- Lane 2: answer -->
+      <text class="lane" x="24" y="216">TWO · THE ANSWER</text>
+      <g transform="translate(24 232)"><g class="node" data-cx="94" data-cy="274">
+        <rect class="who" width="140" height="84" rx="10"/><text class="h" x="14" y="30">Recruiter</text><text class="s" x="14" y="50">types a question</text><text class="s" x="14" y="66">e.g. why robotics?</text></g>
+      </g>
+      <g transform="translate(206 232)"><g class="node" data-cx="281" data-cy="274">
+        <rect class="fn" width="150" height="84" rx="10"/><text class="m" x="14" y="22">ask-ani</text><text class="h" x="14" y="46">Gatekeeper</text><text class="s" x="14" y="66">approved? under limit?</text></g>
+      </g>
+      <g transform="translate(398 232)"><g class="node" data-cx="473" data-cy="274">
+        <rect class="box" width="150" height="84" rx="10"/><text class="m" x="14" y="22">PRIVATE</text><text class="h" x="14" y="46">Your info pool</text><text class="s" x="14" y="66">career, views, rules</text></g>
+      </g>
+      <g transform="translate(590 232)"><g class="node" data-cx="665" data-cy="274">
+        <rect class="ext" width="150" height="84" rx="10"/><text class="m" x="14" y="22">ANTHROPIC API</text><text class="h" x="14" y="46">Claude writes it</text><text class="s" x="14" y="66">only from the pool</text></g>
+      </g>
+      <g transform="translate(782 232)"><g class="node" data-cx="879" data-cy="274">
+        <rect class="who" width="194" height="84" rx="10"/><text class="h" x="14" y="30">Signed answer</text><text class="s" x="14" y="50">text + signature, so only</text><text class="s" x="14" y="66">the bot's words get voiced</text></g>
+      </g>
+      <path class="link" marker-end="url(#ar)" d="M164 274H204 M356 274H396 M548 274H588 M740 274H780"/>
+
+      <!-- Lane 3: voice -->
+      <text class="lane" x="24" y="392">THREE · YOUR VOICE</text>
+      <g transform="translate(24 408)"><g class="node" data-cx="94" data-cy="450">
+        <rect class="who" width="140" height="84" rx="10"/><text class="h" x="14" y="30">Browser</text><text class="s" x="14" y="50">sends the signed</text><text class="s" x="14" y="66">answer back</text></g>
+      </g>
+      <g transform="translate(232 408)"><g class="node" data-cx="312" data-cy="450">
+        <rect class="fn" width="160" height="84" rx="10"/><text class="m" x="14" y="22">ask-ani-voice</text><text class="h" x="14" y="46">Verify + trim</text><text class="s" x="14" y="66">signature, 150 word cap</text></g>
+      </g>
+      <g transform="translate(460 408)"><g class="node" data-cx="550" data-cy="450">
+        <rect class="ext" width="180" height="84" rx="10"/><text class="m" x="14" y="22">GEMINI 3.8 FLASH TTS</text><text class="h" x="14" y="46">Speaks as you</text><text class="s" x="14" y="66">owner's cloned voice</text></g>
+      </g>
+      <g transform="translate(708 408)"><g class="node" data-cx="842" data-cy="450">
+        <rect class="who" width="268" height="84" rx="10"/><text class="h" x="14" y="30">Plays automatically</text><text class="s" x="14" y="50">labeled "AI voice of Ani",</text><text class="s" x="14" y="66">text one tap away</text></g>
+      </g>
+      <path class="link" marker-end="url(#ar)" d="M164 450H230 M392 450H458 M640 450H706"/>
+
+      <!-- storage strip -->
+      <rect x="206" y="520" width="534" height="28" rx="8" fill="rgba(244,236,227,.04)" stroke="rgba(244,236,227,.14)"/>
+      <text class="s" x="222" y="538">NETLIFY BLOBS: approvals and rate limit counters, shared by all three functions</text>
+    </svg>

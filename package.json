@@ -1,0 +1,14 @@
+{
+  "name": "ask-ani",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env dev-server.mjs",
+    "create-voice": "node --env-file-if-exists=.env scripts/create-voice.mjs",
+    "preflight": "node scripts/preflight.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "@netlify/blobs": "^11.1.1"
+  }
+}
