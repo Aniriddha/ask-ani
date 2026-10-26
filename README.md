@@ -32,6 +32,7 @@ Plain HTML plus a small JavaScript widget, and four Netlify Functions. No framew
 | Approval | `netlify/functions/ask-ani-approve.mjs` | Checks the signed button, records the decision |
 | Answer | `netlify/functions/ask-ani.mjs` | Gatekeeping, profile, Claude, signed reply |
 | Voice | `netlify/functions/ask-ani-voice.mjs` | Verifies the signature, Gemini speaks it |
+| Alerts (optional) | `netlify/lib/notify.mjs` | A phone ping through ntfy.sh when someone requests access |
 | Storage | Netlify Blobs | Approvals and rate limit counters |
 
 ## Build your own
@@ -41,14 +42,15 @@ You need a Netlify account, an Anthropic API key, and (for voice) a paid tier Ge
 1. **Clone and install.** `git clone`, then `npm install`.
 2. **Write your profile.** Copy `knowledge/profile.example.md` to `knowledge/profile.md` and fill it in, first person. This is everything the bot knows.
 3. **Set your secrets.** Copy `.env.example` to `.env` and fill it in. Generate the two secrets with `openssl rand -base64 48`.
-4. **Run it locally.** `npm run dev`, then open `http://localhost:8899/demo/`. The admin page is `http://localhost:8899/api/ask-ani-admin?key=YOUR_ADMIN_KEY`.
-5. **Clone your voice (optional).** Record about 20 seconds of natural speech as `voice/ani_reference.wav`, and the consent sentence Google requires as `voice/ani_consent.m4a` ("I am the owner of this voice and I consent to Google using this voice to create a synthetic voice model."). Same room, same mic, no volume boost, or Google's speaker match check fails. Then `npm run create-voice`.
-6. **Check everything.** `npm run preflight` lists what's set and what's missing, without printing any secret.
-7. **Deploy.** Put the widget on your site with `<script>window.ASK_BOT = { name: "Ani", email: "you@example.com" }</script>` and `<script src="ask-ani.js" defer></script>`, connect the repo to Netlify, and add every `.env` value under Site configuration, Environment variables. Keep your profile out of any public repo; this one ignores `knowledge/` on purpose.
+4. **Optional: phone alerts.** Set `NTFY_TOPIC` to a long random string, install the free ntfy app and subscribe to that topic. You get a ping when someone requests access. Only a short heading is sent, never message text or links.
+5. **Run it locally.** `npm run dev`, then open `http://localhost:8899/demo/`. The admin page is `http://localhost:8899/api/ask-ani-admin?key=YOUR_ADMIN_KEY`.
+6. **Clone your voice (optional).** Record about 20 seconds of natural speech as `voice/ani_reference.wav`, and the consent sentence Google requires as `voice/ani_consent.m4a` ("I am the owner of this voice and I consent to Google using this voice to create a synthetic voice model."). Same room, same mic, no volume boost, or Google's speaker match check fails. Then `npm run create-voice`.
+7. **Check everything.** `npm run preflight` lists what's set and what's missing, without printing any secret.
+8. **Deploy.** Put the widget on your site with `<script>window.ASK_BOT = { name: "Ani", email: "you@example.com" }</script>` and `<script src="ask-ani.js" defer></script>`, connect the repo to Netlify, and add every `.env` value under Site configuration, Environment variables. Keep your profile out of any public repo; this one ignores `knowledge/` on purpose.
 
 ## Choosing the model
 
-`ASK_ANI_MODEL` picks the Claude model. In my testing, `claude-sonnet-5` stayed grounded and concise at a low cost per answer. Smaller models were more likely to add claims that weren't in the profile, which matters when recruiters are reading.
+`ASK_ANI_MODEL` picks the Claude model, and `claude-sonnet-5` is the default. In my testing it stayed grounded and concise at a low cost per answer. Smaller models were more likely to add claims that weren't in the profile, which matters when recruiters are reading.
 
 ## Lessons from building it
 

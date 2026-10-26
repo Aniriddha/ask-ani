@@ -1,5 +1,6 @@
 import { limitsFromEnv, overLimit } from "../lib/rate-limit.mjs";
 import { actionSig, newAccessId, readAccess, writeAccess } from "../lib/access.mjs";
+import { notify } from "../lib/notify.mjs";
 
 export const config = { path: "/api/ask-ani-access" };
 
@@ -44,20 +45,7 @@ export default async (req, context) => {
   const denyLink = link("deny");
   console.log(JSON.stringify({ evt: "ask-ani-access-request", name, email, approve: approveLink, deny: denyLink }));
 
-  // Netlify Forms emails this submission to Ani, approve and deny links included.
-  try {
-    await fetch(`${url.origin}/`, {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        "form-name": "ask-ani-leads", name, email,
-        page: String(body?.page || "").slice(0, 200),
-        approve_link: approveLink, deny_link: denyLink,
-      }).toString(),
-    });
-  } catch (err) {
-    console.error("ask-ani-access notify failed:", err?.message);
-  }
+  await notify("Ask Ani access request", `${name} wants access`);
 
   return json(200, { id, status: "pending" });
 };

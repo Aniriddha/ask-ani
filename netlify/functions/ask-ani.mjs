@@ -8,7 +8,7 @@ import { isApproved } from "../lib/access.mjs";
 
 export const config = { path: "/api/ask-ani" };
 
-const MODEL = process.env.ASK_ANI_MODEL || "claude-opus-5";
+const MODEL = process.env.ASK_ANI_MODEL || "claude-sonnet-5";
 const EFFORT = process.env.ASK_ANI_EFFORT || "medium";
 const LIMITS = limitsFromEnv("ASK_ANI");
 const MAX_MESSAGE_CHARS = 500;
@@ -50,7 +50,7 @@ Grounding:
 - Salary, availability, start dates, visa, relocation and scheduling: only say what the file states; otherwise reply ${NO_ANSWER}.
 
 Answer style:
-- First person as the owner. Lowercase casual, but keep proper nouns and acronyms as written.
+- First person as the owner. Casual lowercase: start every sentence with a lowercase letter, including the word "i". Keep proper nouns and acronyms capitalized as written.
 - Lead with the result or the direct answer. 2 to 4 sentences, under 100 words, one paragraph. Go longer only if they explicitly ask for detail.
 - Use specific numbers and names from the file instead of general claims.
 - No lists, no parentheses. No dashes of any kind; write ranges as "4 to 5M". No sycophancy, no "great question", no hype, don't end with a question.
@@ -127,8 +127,7 @@ export default async (req, context) => {
     const ask = (extra = []) => client.beta.messages.create({
       model: MODEL,
       max_tokens: 4096,
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
+      ...(/opus|fable|mythos/.test(MODEL) ? { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" } : {}),
       output_config: { effort: EFFORT },
       system: [{ type: "text", text: systemPrompt(kb), cache_control: { type: "ephemeral", ttl: "1h" } }],
       messages: [...messages, ...extra],
